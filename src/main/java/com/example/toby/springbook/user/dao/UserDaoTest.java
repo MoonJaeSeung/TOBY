@@ -1,6 +1,9 @@
 package com.example.toby.springbook.user.dao;
 
 import com.example.toby.springbook.user.domain.User;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 
 import java.sql.SQLException;
 
@@ -10,7 +13,8 @@ public class UserDaoTest { //관심사는 only test
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
 //        ConnectionMaker connectionMaker = new DConnectionMaker();
 
-        UserDao dao = new DaoFactory().userDao();
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        UserDao dao = context.getBean("userDao",UserDao.class); //userDao라는 이름의 빈을 가져온다.
 
 //        String classpath = System.getProperty("java.class.path");
 //        System.out.println("클래스 패스 : " + classpath);
