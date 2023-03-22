@@ -30,6 +30,7 @@ public class UserDaoTest { //관심사는 only test
         System.out.println(user2.getPassword());
 
         System.out.println(user2.getId() + "조회 성공");
+        //ㅇ
 
     }
 }
