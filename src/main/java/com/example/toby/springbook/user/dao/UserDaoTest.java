@@ -16,6 +16,7 @@ public class UserDaoTest { //관심사는 only test
         ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
         UserDao dao = context.getBean("userDao",UserDao.class); //userDao라는 이름의 빈을 가져온다.
 
+
 //        String classpath = System.getProperty("java.class.path");
 //        System.out.println("클래스 패스 : " + classpath);
 

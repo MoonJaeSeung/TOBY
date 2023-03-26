@@ -3,6 +3,7 @@ package com.example.toby.springbook.user.dao;
 
 
 import com.example.toby.springbook.user.domain.User;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +13,11 @@ public class UserDao {
     private ConnectionMaker connectionMaker;
     private Connection c;
     private User user;
+
+    public UserDao(){//의존 관계 검색을 이용하는 UserDao 생성자
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        this.connectionMaker = context.getBean("connectionMaker",ConnectionMaker.class);
+    }
 
 
     public UserDao(ConnectionMaker connectionMaker){
