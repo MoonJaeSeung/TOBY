@@ -14,10 +14,10 @@ public class UserDao {
     private Connection c;
     private User user;
 
-    public UserDao(){//의존 관계 검색을 이용하는 UserDao 생성자
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-        this.connectionMaker = context.getBean("connectionMaker",ConnectionMaker.class);
-    }
+//    public UserDao(){//의존 관계 검색을 이용하는 UserDao 생성자
+//        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+//        this.connectionMaker = context.getBean("connectionMaker",ConnectionMaker.class);
+//    }
 
 
     public UserDao(ConnectionMaker connectionMaker){
