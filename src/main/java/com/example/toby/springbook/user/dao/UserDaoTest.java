@@ -32,11 +32,21 @@ public class UserDaoTest { //관심사는 only test
         System.out.println(user.getId() + "등록 성공");
 
         User user2 = dao.get(user.getId());
-        System.out.println(user2.getName());
 
-        System.out.println(user2.getPassword());
+        if(!user.getName().equals(user2.getName())){
+            System.out.println("테스트 실패(name)");
+        }
+        else if(!user.getPassword().equals(user2.getPassword())){
+            System.out.println("테스트 실패(Password)");
+        }
+        else{
+            System.out.println("조회 테스트 성공");
+        }
 
-        System.out.println(user2.getId() + "조회 성공");
+//        System.out.println(user2.getName());
+//        System.out.println(user2.getPassword());
+//
+//        System.out.println(user2.getId() + "조회 성공");
         //ㅇh
 
     }

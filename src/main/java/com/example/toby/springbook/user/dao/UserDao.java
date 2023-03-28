@@ -26,6 +26,7 @@ public class UserDao {
 //        this.connectionMaker = connectionMaker;
 //    }
 
+    //setDataSource는 고정이다
     public void setDataSource(DataSource dataSource){
         this.dataSource = dataSource;
     }
