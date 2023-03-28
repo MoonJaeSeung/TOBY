@@ -3,6 +3,7 @@ package com.example.toby.springbook.user.dao;
 
 
 import com.example.toby.springbook.user.domain.User;
+import org.junit.runner.JUnitCore;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.sql.DataSource;
@@ -25,6 +26,9 @@ public class UserDao {
 //    public UserDao(ConnectionMaker connectionMaker){
 //        this.connectionMaker = connectionMaker;
 //    }
+//public static void main(String[] args) {
+//    JUnitCore.main("com.example.toby.springbook.user.dao.UserDaoTest3");
+//}
 
     //setDataSource는 고정이다
     public void setDataSource(DataSource dataSource){
