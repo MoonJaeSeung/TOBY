@@ -5,6 +5,7 @@ package com.example.toby.springbook.user.dao;
 import com.example.toby.springbook.user.domain.User;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ public class UserDao {
     private ConnectionMaker connectionMaker;
     private Connection c;
     private User user;
+    private DataSource dataSource;
 
 //    public UserDao(){//의존 관계 검색을 이용하는 UserDao 생성자
 //        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
@@ -24,12 +26,16 @@ public class UserDao {
 //        this.connectionMaker = connectionMaker;
 //    }
 
+    public void setDataSource(DataSource dataSource){
+        this.dataSource = dataSource;
+    }
+
     public void setConnectionMaker(ConnectionMaker connectionMaker){
         this.connectionMaker = connectionMaker;
     }
     public void add(User user) throws ClassNotFoundException, SQLException {
 
-        Connection c = connectionMaker.makeConnection();
+        Connection c = dataSource.getConnection();
         //인터페이스에 정의된 메소드를 사용하므로 고객이 바뀌어도 메소드 이름은 항상 똑같다
 
 
@@ -49,7 +55,7 @@ public class UserDao {
     public User get(String id) throws ClassNotFoundException, SQLException {
 
 //        Connection c = connectionMaker.makeConnection();
-        this.c = connectionMaker.makeConnection();
+        Connection c = dataSource.getConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "select * from users where id = ?");

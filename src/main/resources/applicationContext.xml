@@ -3,13 +3,33 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean
-        id="myConnectionMaker"
-        class="com.example.toby.springbook.user.dao.DConnectionMaker"
-    />
+    <!--    <bean-->
+    <!--        id="ConnectionMaker"-->
+    <!--        class="com.example.toby.springbook.user.dao.DConnectionMaker"-->
+    <!--    />-->
+
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.SimpleDriverDataSource"/>
 
     <bean id="userDao" class="com.example.toby.springbook.user.dao.UserDao">
-        <property name="connectionMaker" ref="myConnectionMaker"/>
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
 </beans>
+
+
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+<!--       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">-->
+
+<!--    <bean-->
+<!--        id="myConnectionMaker"-->
+<!--        class="com.example.toby.springbook.user.dao.DConnectionMaker"-->
+<!--    />-->
+
+<!--    <bean id="userDao" class="com.example.toby.springbook.user.dao.UserDao">-->
+<!--        <property name="connectionMaker" ref="myConnectionMaker"/>-->
+<!--    </bean>-->
+
+<!--</beans>-->
