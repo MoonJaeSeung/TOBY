@@ -14,8 +14,8 @@ public class UserDaoTest { //관심사는 only test
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
 //        ConnectionMaker connectionMaker = new DConnectionMaker();
 
-//        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+//        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
         UserDao dao = context.getBean("userDao",UserDao.class); //userDao라는 이름의 빈을 가져온다.
 
 

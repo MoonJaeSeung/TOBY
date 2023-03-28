@@ -9,7 +9,14 @@
     <!--    />-->
 
     <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.SimpleDriverDataSource"/>
+          class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+            <property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
+            <property name="url" value="jdbc:mysql://127.0.0.1:3306/user" />
+            <property name="username" value="root" />
+            <property name="password" value="0000" />
+    </bean>
+
+
 
     <bean id="userDao" class="com.example.toby.springbook.user.dao.UserDao">
         <property name="dataSource" ref="dataSource"/>
