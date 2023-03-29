@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.is;
 
 @DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="/applicationContext.xml")
+@ContextConfiguration(locations="/test-applicationContext.xml")
 public class UserDaoTest3 {
 
     private User user1;
@@ -51,9 +51,9 @@ public class UserDaoTest3 {
         System.out.println(this.context);
         System.out.println(this);
 
-        DataSource dataSource = new SingleConnectionDataSource(
-                "jdbc:mysql://127.0.0.1:3306/testdb","root","0000",true
-        );
+//        DataSource dataSource = new SingleConnectionDataSource(
+//                "jdbc:mysql://127.0.0.1:3306/testdb","root","0000",true
+//        );
         dao.setDataSource(dataSource);
 
     }
