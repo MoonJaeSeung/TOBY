@@ -26,10 +26,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'cglib:cglib:3.3.0'
     implementation 'mysql:mysql-connector-java:8.0.27'
-//    compileOnly 'org.springframework:spring-jdbc:3.0.7.RELEASE'
     implementation 'org.springframework:spring-jdbc:3.0.7.RELEASE'
-    testImplementation('junit:junit:4.7') //JUnit은 테스트에만 필요하고 기본 애플리케이션 코드에 포함X
+    testImplementation('junit:junit:4.7')
 }
+
+
+
 
 tasks.named('test') {
     useJUnitPlatform()

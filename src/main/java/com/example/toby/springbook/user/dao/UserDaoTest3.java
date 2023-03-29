@@ -1,24 +1,67 @@
 package com.example.toby.springbook.user.dao;
 
 import com.example.toby.springbook.user.domain.User;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+@DirtiesContext
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="/applicationContext.xml")
 public class UserDaoTest3 {
+
+    private User user1;
+    private User user2;
+    private User user3;
+
+    @Autowired
+    private ApplicationContext context;
+
+    @Autowired
+    UserDao dao;
+
+    @Autowired
+    SimpleDriverDataSource dataSource;
+
+    @Before
+    public void setUp(){ // 픽스처의 모음
+//        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+
+        this.dao = context.getBean("userDao", UserDao.class);
+
+         user1 = new User("JS","문재승","no1");
+         user2 = new User("YH","김윤한","no2");
+         user3 = new User("SJ","황석준","no3");
+
+        System.out.println(this.context);
+        System.out.println(this);
+
+        DataSource dataSource = new SingleConnectionDataSource(
+                "jdbc:mysql://127.0.0.1:3306/testdb","root","0000",true
+        );
+        dao.setDataSource(dataSource);
+
+    }
+
     @Test
     public void addAndGet() throws SQLException, ClassNotFoundException {
-        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
-        UserDao dao = context.getBean("userDao",UserDao.class);
 
-        User user1 = new User("gyumee", "박성철", "springno1");
-        User user2 = new User("leegw700", "이길원", "springno2");
+
 
         dao.deleteAll();
         assertThat(dao.getCount(),is(0));
@@ -42,12 +85,9 @@ public class UserDaoTest3 {
 
     @Test
     public void count() throws SQLException, ClassNotFoundException {
-        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
-        UserDao dao = context.getBean("userDao",UserDao.class);
 
-        User user1 = new User("JS","문재승","no1");
-        User user2 = new User("YH","김윤한","no2");
-        User user3 = new User("SJ","황석준","no3");
+
+
 
         dao.deleteAll();
         assertThat(dao.getCount(),is(0));
@@ -64,9 +104,7 @@ public class UserDaoTest3 {
 
     @Test(expected = EmptyResultDataAccessException.class)
     public void getUserFailure() throws SQLException,ClassNotFoundException{
-        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
 
-        UserDao dao = context.getBean("userDao",UserDao.class);
         dao.deleteAll();
         assertThat(dao.getCount(),is(0));
 
