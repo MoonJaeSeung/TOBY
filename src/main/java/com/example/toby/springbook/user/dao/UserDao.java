@@ -5,6 +5,7 @@ package com.example.toby.springbook.user.dao;
 import com.example.toby.springbook.user.domain.User;
 import org.junit.runner.JUnitCore;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -67,18 +68,23 @@ public class UserDao {
         ps.setString(1, id);
 
         ResultSet rs = ps.executeQuery();
-        rs.next();
-//        User user = new User();
-        this.user = new User();
-        this.user.setId(rs.getString("id"));
-        this.user.setName(rs.getString("name"));
-        this.user.setPassword(rs.getString("password"));
 
+        User user = null;
+
+        if(rs.next()) {
+
+            user = new User();
+            user.setId(rs.getString("id"));
+            user.setName(rs.getString("name"));
+            user.setPassword(rs.getString("password"));
+        }
         rs.close();
         ps.close();
         c.close();
 
-        return this.user;
+        if(user == null) throw new EmptyResultDataAccessException(1);
+
+        return user;
 
     }
 
