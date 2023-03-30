@@ -3,6 +3,7 @@ package com.example.toby.springbook.user.dao;
 
 
 import com.example.toby.springbook.user.domain.User;
+import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -32,6 +33,7 @@ public class UserDao {
 //}
 
     //setDataSource는 고정이다
+
     public void setDataSource(DataSource dataSource){
         this.dataSource = dataSource;
     }
@@ -89,30 +91,76 @@ public class UserDao {
     }
 
     public void deleteAll() throws SQLException{
-        Connection c = dataSource.getConnection();
+        Connection c = null;
 
-        PreparedStatement ps = c.prepareStatement("delete from users");
+        PreparedStatement ps =null;
 
-        ps.executeUpdate();
+        try{ // 예외가 발생할 가능성이 있는 코드를 모두 try 블록으로 묶어준다.
+            c= dataSource.getConnection();
+            ps = c.prepareStatement("delete from users");
+            ps.executeUpdate();
+        }catch(SQLException e){ //예외가 발생했을 때 부가적인 작업을 해줄 수 있도록 catch블록을 둔다.
+            throw e;
+        }finally{
+            if(ps != null){
+                try{
+                    ps.close();
+                }catch(SQLException e){
+
+                }
+            }
+            if(c != null){
+                try{
+                    c.close();
+                }catch(SQLException e){
+
+                }
+            }
+        }
+
 
         ps.close();
         c.close();
     }
 
     public int getCount() throws SQLException{
-        Connection c = dataSource.getConnection();
+        Connection c = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-        PreparedStatement ps = c.prepareStatement("select count(*) from users");
+        try{
+            c = dataSource.getConnection();
 
-        ResultSet rs = ps.executeQuery();
-        rs.next();
-        int count = rs.getInt(1);
+            ps = c.prepareStatement("select count(*) from users");
 
-        rs.close();
-        ps.close();
-        c.close();
+            rs= ps.executeQuery();
+            rs.next();
+            return rs.getInt(1);
+        }catch(SQLException e){
+            throw e;
+        }finally{
+            if(rs != null){
+                try{
+                    rs.close();
+                }catch(SQLException e){
 
-        return count;
+                }
+            }
+            if(ps != null){
+                try{
+                    ps.close();
+                }catch(SQLException e){
+
+                }
+            }
+            if(c != null){
+                try{
+                    c.close();
+                }catch(SQLException e){
+
+                }
+            }
+        }
     }
 
 }
