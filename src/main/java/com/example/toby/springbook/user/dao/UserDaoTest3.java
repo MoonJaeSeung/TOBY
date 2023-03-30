@@ -15,6 +15,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -57,6 +59,8 @@ public class UserDaoTest3 {
         dao.setDataSource(dataSource);
 
     }
+
+
 
     @Test
     public void addAndGet() throws SQLException, ClassNotFoundException {
@@ -111,3 +115,4 @@ public class UserDaoTest3 {
         dao.get("unknown_id");
     }
 }
+

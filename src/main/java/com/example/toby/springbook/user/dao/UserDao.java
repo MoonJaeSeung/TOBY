@@ -41,6 +41,8 @@ public class UserDao {
     public void setConnectionMaker(ConnectionMaker connectionMaker){
         this.connectionMaker = connectionMaker;
     }
+
+//    abstract protected PreparedStatement makeStatement(Connection c) throws SQLException;
     public void add(User user) throws ClassNotFoundException, SQLException {
 
         Connection c = dataSource.getConnection();
@@ -97,7 +99,9 @@ public class UserDao {
 
         try{ // 예외가 발생할 가능성이 있는 코드를 모두 try 블록으로 묶어준다.
             c= dataSource.getConnection();
-            ps = c.prepareStatement("delete from users");
+            StatementStrategy strategy = new DeleteAllStatement();
+            ps = strategy.makePreparedStatement(c);
+//            ps=makeStatement(c);
             ps.executeUpdate();
         }catch(SQLException e){ //예외가 발생했을 때 부가적인 작업을 해줄 수 있도록 catch블록을 둔다.
             throw e;
