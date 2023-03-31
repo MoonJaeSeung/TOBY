@@ -93,38 +93,8 @@ public class UserDao {
     }
 
     public void deleteAll() throws SQLException{
-        Connection c = null;
-
-        PreparedStatement ps =null;
-
-        try{ // 예외가 발생할 가능성이 있는 코드를 모두 try 블록으로 묶어준다.
-            c= dataSource.getConnection();
-            StatementStrategy strategy = new DeleteAllStatement();
-            ps = strategy.makePreparedStatement(c);
-//            ps=makeStatement(c);
-            ps.executeUpdate();
-        }catch(SQLException e){ //예외가 발생했을 때 부가적인 작업을 해줄 수 있도록 catch블록을 둔다.
-            throw e;
-        }finally{
-            if(ps != null){
-                try{
-                    ps.close();
-                }catch(SQLException e){
-
-                }
-            }
-            if(c != null){
-                try{
-                    c.close();
-                }catch(SQLException e){
-
-                }
-            }
-        }
-
-
-        ps.close();
-        c.close();
+        StatementStrategy st = new DeleteAllStatement();
+        jdbcContextWithStatementStrategy(st);
     }
 
     public int getCount() throws SQLException{
@@ -164,6 +134,26 @@ public class UserDao {
 
                 }
             }
+        }
+    }
+
+    public void jdbcContextWithStatementStrategy(StatementStrategy stmt) throws SQLException{
+        Connection c = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try{
+            c = dataSource.getConnection();
+
+            ps = stmt.makePreparedStatement(c);
+            ps.executeUpdate();
+
+        }catch(SQLException e){
+            throw e;
+        }finally{
+//            if(rs != null){try{rs.close();}catch(SQLException e){}}
+            if(ps != null){try{ps.close();}catch(SQLException e){}}
+            if(c != null){try{c.close();}catch(SQLException e){}}
         }
     }
 
