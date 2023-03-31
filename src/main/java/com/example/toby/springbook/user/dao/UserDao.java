@@ -18,6 +18,11 @@ public class UserDao {
     private Connection c;
     private User user;
     private DataSource dataSource;
+    private JdbcContext jdbcContext;
+
+    public void setJdbcContext(JdbcContext jdbcContext){
+        this.jdbcContext = jdbcContext;
+    }
 
 //    public UserDao(){//의존 관계 검색을 이용하는 UserDao 생성자
 //        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
@@ -43,26 +48,35 @@ public class UserDao {
     }
 
 //    abstract protected PreparedStatement makeStatement(Connection c) throws SQLException;
-    public void add(User user) throws ClassNotFoundException, SQLException {
-
-        Connection c = dataSource.getConnection();
-        //인터페이스에 정의된 메소드를 사용하므로 고객이 바뀌어도 메소드 이름은 항상 똑같다
-
-
-        PreparedStatement ps = c.prepareStatement(
-                "insert into users(id,name,password) values(?,?,?)");
-        ps.setString(1, user.getId());
-        ps.setString(2, user.getName());
-        ps.setString(3, user.getPassword());
-
-        ps.executeUpdate();
-
-        ps.close();
-        c.close();
-
+    public void add(final User user) throws SQLException {
+        this.jdbcContext.workWithStatementStrategy(
+                new StatementStrategy() {
+                    @Override
+                    public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                        PreparedStatement ps = c.prepareStatement(
+                                "insert into users(id,name,password) values(?,?,?)");
+                        ps.setString(1, user.getId());
+                        ps.setString(2, user.getName());
+                        ps.setString(3, user.getPassword());
+                        return ps;
+                    }
+                }
+                );
     }
 
-    public User get(String id) throws ClassNotFoundException, SQLException {
+
+    public void deleteAll() throws SQLException{    //클라이언트 책임 담당
+        this.jdbcContext.workWithStatementStrategy(
+                new StatementStrategy() {
+                    @Override
+                    public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                        return c.prepareStatement("delete from users");
+                    }
+                }
+        );
+    }
+
+    public User get(String id) throws  SQLException {
 
 //        Connection c = connectionMaker.makeConnection();
         Connection c = dataSource.getConnection();
@@ -92,10 +106,7 @@ public class UserDao {
 
     }
 
-    public void deleteAll() throws SQLException{
-        StatementStrategy st = new DeleteAllStatement();
-        jdbcContextWithStatementStrategy(st);
-    }
+
 
     public int getCount() throws SQLException{
         Connection c = null;
@@ -137,25 +148,7 @@ public class UserDao {
         }
     }
 
-    public void jdbcContextWithStatementStrategy(StatementStrategy stmt) throws SQLException{
-        Connection c = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
 
-        try{
-            c = dataSource.getConnection();
-
-            ps = stmt.makePreparedStatement(c);
-            ps.executeUpdate();
-
-        }catch(SQLException e){
-            throw e;
-        }finally{
-//            if(rs != null){try{rs.close();}catch(SQLException e){}}
-            if(ps != null){try{ps.close();}catch(SQLException e){}}
-            if(c != null){try{c.close();}catch(SQLException e){}}
-        }
-    }
 
 }
 

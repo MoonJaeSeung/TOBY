@@ -16,11 +16,16 @@
             <property name="password" value="0000" />
     </bean>
 
-
+    <bean id="jdbcContext" class="com.example.toby.springbook.user.dao.JdbcContext">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 
     <bean id="userDao" class="com.example.toby.springbook.user.dao.UserDao">
         <property name="dataSource" ref="dataSource"/>
+        <property name="jdbcContext" ref="jdbcContext" />
     </bean>
+
+
 
 </beans>
 
