@@ -20,9 +20,9 @@ public class UserDao {
     private DataSource dataSource;
     private JdbcContext jdbcContext;
 
-    public void setJdbcContext(JdbcContext jdbcContext){
-        this.jdbcContext = jdbcContext;
-    }
+//    public void setJdbcContext(JdbcContext jdbcContext){
+//        this.jdbcContext = jdbcContext;
+//    }
 
 //    public UserDao(){//의존 관계 검색을 이용하는 UserDao 생성자
 //        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
@@ -40,7 +40,12 @@ public class UserDao {
     //setDataSource는 고정이다
 
     public void setDataSource(DataSource dataSource){
+        this.jdbcContext = new JdbcContext();
+
+        this.jdbcContext.setDataSource(dataSource);
+
         this.dataSource = dataSource;
+
     }
 
     public void setConnectionMaker(ConnectionMaker connectionMaker){
@@ -151,6 +156,7 @@ public class UserDao {
 
 
 }
+//
 
 
 
