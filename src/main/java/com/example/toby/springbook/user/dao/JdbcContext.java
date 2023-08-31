@@ -8,6 +8,7 @@ import java.sql.SQLException;
 public class JdbcContext {
     private DataSource dataSource;
 
+    //DataSource 타입 빈을 DI 받을 수 있게 준비해둔다.
     public void setDataSource(DataSource dataSource){
         this.dataSource = dataSource;
     }
